@@ -8,7 +8,7 @@ export const Navbar = () => {
             <div className="hidden lg:flex lg:flex-1 bg-yellow-500">
                 {/* TODO: Add Search */}
                 Search
-            </div>
+            </div> 
             <UserButton />
         </div>
     )
