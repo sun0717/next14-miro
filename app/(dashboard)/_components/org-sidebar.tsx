@@ -33,12 +33,12 @@ export const OrgSidebar = () => {
                         "font-semibold text-2xl",
                         font.className
                     )}>
-
+                        Board
                     </span>
                 </div>
             </Link>
             {/* Center 的内容属性对齐 Center 的 items 属性 */}
-            {/* <OrganizationSwitcher 
+            <OrganizationSwitcher 
                 hidePersonal
                 appearance={{
                     elements: {
@@ -58,7 +58,7 @@ export const OrgSidebar = () => {
                         }
                     }
                 }}
-            /> */}
+            />
             <div className="space-y-1 w-full">
                 <Button
                     variant={favorites ? "ghost" : "secondary"}
