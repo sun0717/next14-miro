@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -7,11 +8,15 @@ import { useAuth } from "@clerk/nextjs";
 import { MoreHorizontal } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
+import { api } from "@/convex/_generated/api";
 import { Actions } from "@/components/actions";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useApiMutation } from "@/hooks/use-api-mutation";
 
 import { Overlay } from "./overlay";
 import { Footer } from "./footer";
+import { useMutation } from "convex/react";
+import { Id } from "@/convex/_generated/dataModel";
 
 interface BoardCardProps {
     id: string;
@@ -40,6 +45,30 @@ export const BoardCard = ({
     const createdAtLabel = formatDistanceToNow(createdAt, {
         addSuffix: true,
     });
+
+    const handleFavorite = useMutation(api.board.favorite);
+    const handleUnFavorite = useMutation(api.board.unfavorite);
+
+    const {
+        mutate: onFavorite,
+        pending: pendingFavorite,
+    } = useApiMutation(api.board.favorite);
+
+    const {
+        mutate: onUnfavorite,
+        pending: pendingUnfavorite,
+    } = useApiMutation(api.board.unfavorite);
+
+    const toggleFavorite = () => {
+        if (isFavorite) {
+            handleUnFavorite({ id: id as Id<"boards"> })
+                .catch(() => toast.error("Failed to unfavorite"));
+        } else {
+            handleFavorite({ id: id as Id<"boards">, orgId })
+                .catch(() => toast.error("Failed to favorite"));
+        }
+    };
+    
     return (
         <Link href={`/board/${id}`}>
             <div className="group aspect-[100/127] border rounded-lg flex flex-col justify-between overflow-hidden">
@@ -70,8 +99,8 @@ export const BoardCard = ({
                     title={title}
                     authorLabel={authorLabel}
                     createdAtLabel={createdAtLabel}
-                    onClick={() => {}}
-                    disabled={false}
+                    onClick={toggleFavorite}
+                    disabled={pendingFavorite || pendingUnfavorite}
                 />
             </div>
         </Link>
