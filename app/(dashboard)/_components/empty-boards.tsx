@@ -9,7 +9,7 @@ import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import { useOrganization } from "@clerk/nextjs";
 import { useApiMutation } from "@/hooks/use-api-mutation";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export const EmptyBoards = () => {
     const router = useRouter();
